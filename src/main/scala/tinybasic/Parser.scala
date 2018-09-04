@@ -5,6 +5,7 @@ import tinybasic.Token._
 class Parser(lexer: Lexer) {
 
   private var tokens = Stream.continually(lexer.next()).takeWhile(_ != Eof)
+
   def parse(): Program = {
     var lines = List[Line]()
     while (tokens.nonEmpty) {
@@ -13,12 +14,15 @@ class Parser(lexer: Lexer) {
 
     Program(lines.reverse)
   }
+
   private def advance() = {
     val tmp = token
     tokens = tokens.tail
     tmp
   }
+
   private def token = tokens.head
+
   private def line() = {
     tokens.head match {
       case Number(num) =>

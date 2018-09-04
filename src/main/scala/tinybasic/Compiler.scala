@@ -24,6 +24,7 @@ class Compiler(name: String, program: Program) {
     null,
     Array.empty
   )
+
   def compile(): Array[Byte] = {
     mv.visitCode()
     program.lines.foreach(line => {
@@ -37,14 +38,17 @@ class Compiler(name: String, program: Program) {
     cv.visitEnd()
     cv.toByteArray
   }
+
   private def getLocalSlot(name: String): Int = {
     if (!locals.contains(name)) locals :+= name
     locals.indexOf(name)
   }
+
   private def getLabel(num: Int): Label = {
     val line = labelMap.keys.single(_.num.exists(_ == num))
     labelMap(line)
   }
+
   private def compile(label: Label, stmt: Stmt): Unit = {
     stmt match {
       case PrintStmt(exprs)              =>
@@ -105,6 +109,7 @@ class Compiler(name: String, program: Program) {
       case other                => throw new UnsupportedOperationException(s"unknown statement $other")
     }
   }
+
   private def compile(expr: Expr): Unit = {
     expr match {
       case ArithExpr(left, right, op) =>

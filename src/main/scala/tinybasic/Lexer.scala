@@ -20,10 +20,12 @@ class Lexer(reader: Reader) {
 
     next0()
   }
+
   private def read(): Option[Char] = {
     val x = reader.read()
     if (x == -1) None else Some(x.toChar)
   }
+
   private def peek(): Option[Char] = {
     reader.mark(1)
     try {
@@ -32,10 +34,12 @@ class Lexer(reader: Reader) {
       reader.reset()
     }
   }
+
   @tailrec
   private def take(test: (Char) => Boolean, buf: String = ""): String = {
     if (peek().exists(test)) take(test, buf + read().get) else buf
   }
+
   private def token(ch: Char) = ch match {
     case '\n'                                        => NewLine
     case '+'                                         => Plus
